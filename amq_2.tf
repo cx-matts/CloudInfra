@@ -15,4 +15,6 @@ resource "aws_mq_broker" "amq_2" {
     username = "ExampleUser"
     password = "MindTheGap"
   }
+
+  publicly_accessible  = true 
 }
