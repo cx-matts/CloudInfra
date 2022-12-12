@@ -1,9 +1,9 @@
 resource "aws_s3_bucket" "s3_1" {
   bucket = "S3_1"
-  acl    = "public"
+  acl    = "public-read-write"
 
   tags = {
-    Name        = "My bucket"
+    Name        = "My bucket 1"
     Environment = "Dev"
   }
 

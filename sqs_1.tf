@@ -1,34 +1,23 @@
-resource "aws_sqs_queue" "sqs_1" {
-  name                      = "SQS_1"
-  delay_seconds             = 90
-  max_message_size          = 2048
-  message_retention_seconds = 86400
-  receive_wait_time_seconds = 10
-  redrive_policy = jsonencode({
-    deadLetterTargetArn = aws_sqs_queue.terraform_queue_deadletter.arn
-    maxReceiveCount     = 4
-  })
+resource "aws_sqs_queue" "Test_q" {
+  name = "SQS_1"
 
-  tags = {
-    Environment = "production"
-  }
-
-
-  policy = <<POLICY
+    policy = <<EOF
 {
   "Version": "2012-10-17",
-  "Id": "sqspolicy",
-  "Statement": [
-    {
-      "Sid": "First",
+  "Id": "Queue1_Policy_UUID",
+  "Statement": [{
+      "Sid":"Queue1_AnonymousAccess_AllActions_AllowlistIP",
       "Effect": "Allow",
       "Principal": "*",
-      "Action": "sqs:SendMessage",
-      "Resource": "aws_sqs_queue.positive3.arn"
-    }
-  ]
+      "Action": "sqs:*",
+      "Resource": "arn:aws:sqs:*:111122223333:queue1",
+      "Condition" : {
+        "IpAddress" : {
+            "aws:SourceIp":"192.168.143.0/24"
+        }
+      }
+  }]
 }
-POLICY
+EOF
 }
-
 
